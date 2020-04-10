@@ -40,13 +40,23 @@ Demonstrate your understanding of this Sprint's concepts by answering the follow
 
 - [ ] Mention two parts of Express that you learned about this week.
 
+-- This week I've learned many things regarding the Express ecosystem. Express (to me) is similar to React because it allows coders to write javascript shorthand with many shortcuts to something that would take days to write in vanilla javascript. I've learned about route handlers and express.json. Both are middleware functions and both are methods in Express.
+
 - [ ] Describe Middleware?
+
+-- Middleware is the obstacles data has to get through in order to reach its intended route. Some middleware directs the data while others observe and report the data. Some examples of middleware functions are logger, use, and helmet.
 
 - [ ] Describe a Resource?
 
+-- Everything is a resource when regarding an api/server. Each resource tends to have a unique URL as well. 
+
 - [ ] What can the API return to help clients know if a request was successful?
 
+-- A status of 200.
+
 - [ ] How can we partition our application into sub-applications?
+
+-- We break our application into sub-applications using the "require" method which is similar to imports in React. We also export what we are requiring using "module.exports"
 
 ## Minimum Viable Product
 
