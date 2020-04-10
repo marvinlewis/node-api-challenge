@@ -12,7 +12,7 @@ router.get("/", (req, res) => {
     })
 })
 
-router.get("/:id", (req, res) => {
+router.get("/:id", validateActionId, (req, res) => {
     actionsDb.get(req.params.id)
     .then(action => {
         res.status(200).json(action)
@@ -36,7 +36,7 @@ router.post("/", (req, res) => {
     })
 })
 
-router.put("/:id", (req, res) => {
+router.put("/:id", validateActionId, (req, res) => {
     actionsDb.update(req.params.id, req.body)
     .then(action => {
         res.status(200).json(action)
@@ -48,7 +48,7 @@ router.put("/:id", (req, res) => {
     })
 })
 
-router.delete("/:id", (req, res) => {
+router.delete("/:id", validateActionId, (req, res) => {
     actionsDb.remove(req.params.id)
     .then(action => {
         res.status(200).json(action)
@@ -59,5 +59,20 @@ router.delete("/:id", (req, res) => {
         })
     })
 })
+
+function validateActionId (req, res, next) {
+    const id = req.params.id;
+    actionsDb.get(id)
+    .then(post => {
+        if ( id == post.id ){
+            next()
+        } 
+    })
+    .catch(err => {
+        res.status(400).json({
+            error : "error searching for ID"
+        })
+    })
+}
 
 module.exports = router;

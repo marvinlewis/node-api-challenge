@@ -12,7 +12,7 @@ router.get("/", (req, res) => {
     })
 })
 
-router.get("/:id", (req, res) => {
+router.get("/:id", validateActionId, (req, res) => {
     projectDb.get(req.params.id)
     .then(proj => {
         res.status(200).json(proj)
@@ -36,7 +36,20 @@ router.post("/", (req, res) => {
     })
 })
 
-router.put("/:id", (req, res) => {
+router.post("/:id/actions", validateActionId, (req, res) => {
+    projectDb.insert(req.body)
+    .then(post => {
+        console.log(post)
+        res.status(200).json(post)
+    })
+    .catch(err => {
+        res.status(400).json({
+            error : "couldnt post action"
+        })
+    })
+})
+
+router.put("/:id", validateActionId, (req, res) => {
     projectDb.update(req.params.id, req.body)
     .then(proj => {
         res.status(200).json(proj)
@@ -48,7 +61,7 @@ router.put("/:id", (req, res) => {
     })
 })
 
-router.delete("/:id", (req, res) => {
+router.delete("/:id", validateActionId, (req, res) => {
     projectDb.remove(req.params.id)
     .then(proj => {
         res.status(200).json(proj)
@@ -60,7 +73,7 @@ router.delete("/:id", (req, res) => {
     })
 })
 
-router.get("/:id/actions", (req, res) => {
+router.get("/:id/actions", validateActionId, (req, res) => {
     projectDb.getProjectActions(req.params.id)
     .then(actions => {
         res.status(200).json(actions)
@@ -71,5 +84,21 @@ router.get("/:id/actions", (req, res) => {
         })
     })
 })
+
+
+function validateActionId (req, res, next) {
+    const id = req.params.id;
+    projectDb.get(id)
+    .then(post => {
+        if ( id == post.id ){
+            next()
+        } 
+    })
+    .catch(err => {
+        res.status(400).json({
+            error : "error searching for ID"
+        })
+    })
+}
 
 module.exports = router;
